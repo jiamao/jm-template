@@ -1,0 +1,19 @@
+{
+  "name": "node-micro-templating",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiamao/node-micro-templating.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jiamao/node-micro-templating/issues"
+  },
+  "homepage": "https://github.com/jiamao/node-micro-templating#readme"
+}
