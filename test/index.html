@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>
+		<title>micro templating</title>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+        <script src="../index.js"></script>
+        <!--这里是预编译好的模板，如果不引用则会异步去拉取模板-->
+        <!--<script src="templates/user.js"></script>-->
+	</head>
+	<body>
+		<div id="root"></div>
+        <script>
+            window.MICROTEMPLATING.render('user.html', {
+                root: 'templates',
+                data: {
+                    users: [
+                        {url:'http://qqq.com', name: "jiamao"},
+                        {url:'http://qqq2.com', name: "jiamao2"}
+                    ]
+                }
+            }, function(err, res) {
+                document.getElementById('root').innerHTML = res;
+            });
+        </script>
+	</body>
+</html>
