@@ -72,12 +72,12 @@ template.render('./user.html', {
 ```js
 // 预编译
   var usertpl = fs.readFileSync(path.join(__dirname,'./templates/user.html'), 'utf8');
-  var tpl = engine.precompile(usertpl, {
+  var tpl = template.precompile(usertpl, {
       id: 'user.html'
   });    
 
   var bannertpl = fs.readFileSync(path.join(__dirname,'./templates/banner.html'), 'utf8');
-  tpl += engine.precompile(bannertpl, {
+  tpl += template.precompile(bannertpl, {
     id: 'banner.html'
   });
 // 浏览器只需要引用这个user.js即可
