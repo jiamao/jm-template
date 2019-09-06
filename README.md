@@ -11,6 +11,8 @@
 
 基础 `Micro-Templating` [https://johnresig.com/blog/javascript-micro-templating/](https://johnresig.com/blog/javascript-micro-templating/)开发的，可以node下运行，并支持预编译到浏览器中运行。
 
+可以用来做同构模板引擎。
+
 ## Install
 
 ```bash
@@ -65,6 +67,7 @@ template.render('./user.html', {
 
 #### 预编译
 如果有子模板文件，在开发环境下，会自动ajax请求异步渲染。 当我们部署到生产环境，自然不希望增加请求，这时就可以用预编译功能，它可以把模板压入同一js文件中。
+
 
 ```js
 // 预编译
