@@ -4,12 +4,8 @@
 [![NPM version][npm-image]][npm-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: https://img.shields.io/npm/v/node-micro-templating.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/node-micro-templating
-[download-image]: https://img.shields.io/npm/dm/node-micro-templating.svg?style=flat-square
-[download-url]: https://npmjs.org/package/node-micro-templating
 
-基础 `Micro-Templating` [https://johnresig.com/blog/javascript-micro-templating/](https://johnresig.com/blog/javascript-micro-templating/)开发的，可以node下运行，并支持预编译到浏览器中运行。
+基于 `Micro-Templating` [https://johnresig.com/blog/javascript-micro-templating/](https://johnresig.com/blog/javascript-micro-templating/)开发的，可以node下运行，并支持预编译到浏览器中运行。
 
 可以用来做同构模板引擎。
 
@@ -123,3 +119,8 @@ template.render('./user.html', {
 ## License
 
 [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/node-micro-templating.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/node-micro-templating
+[download-image]: https://img.shields.io/npm/dm/node-micro-templating.svg?style=flat-square
+[download-url]: https://npmjs.org/package/node-micro-templating
