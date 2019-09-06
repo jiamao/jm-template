@@ -12,13 +12,13 @@
 ## Install
 
 ```bash
-$ npm i node-micro-templating --save
+$ npm i jm-template --save
 ```
 
 ## Usage
 
 ```js
-const template = require('node-micro-templating');
+const template = require('jm-template');
 
 const users =  [
     {url:'http://qqq', name: "jiamao"},
@@ -83,7 +83,7 @@ template.render('./user.html', {
 
 ### 示例
 
-[https://jiamao.github.io/node-micro-templating/test/index.html](https://jiamao.github.io/node-micro-templating/test/index.html)
+[https://jiamao.github.io/jm-template/test/index.html](https://jiamao.github.io/jm-template/test/index.html)
 
 ```html
 <!doctype html>
@@ -120,7 +120,7 @@ template.render('./user.html', {
 
 [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/node-micro-templating.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/node-micro-templating
-[download-image]: https://img.shields.io/npm/dm/node-micro-templating.svg?style=flat-square
-[download-url]: https://npmjs.org/package/node-micro-templating
+[npm-image]: https://img.shields.io/npm/v/jm-template.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/jm-template
+[download-image]: https://img.shields.io/npm/dm/jm-template.svg?style=flat-square
+[download-url]: https://npmjs.org/package/jm-template

@@ -243,6 +243,6 @@
         module.exports = MICROTEMPLATING;
     }
     if(typeof window != 'undefined') {
-        window.MICROTEMPLATING = MICROTEMPLATING;
+        window.JMTEMPLATE = MICROTEMPLATING;
     }
 })();

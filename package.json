@@ -1,5 +1,5 @@
 {
-  "name": "node-micro-templating",
+  "name": "jm-template",
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jiamao/node-micro-templating.git"
+    "url": "git+https://github.com/jiamao/jm-template.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jiamao/node-micro-templating/issues"
+    "url": "https://github.com/jiamao/jm-template/issues"
   },
-  "homepage": "https://github.com/jiamao/node-micro-templating#readme"
+  "homepage": "https://github.com/jiamao/jm-template#readme"
 }
