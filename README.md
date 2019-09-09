@@ -72,12 +72,16 @@ template.render('./user.html', {
 // 预编译
   var usertpl = fs.readFileSync(path.join(__dirname,'./templates/user.html'), 'utf8');
   var tpl = template.precompile(usertpl, {
-      id: 'user.html'
+      id: 'user.html' // 这里可以 是function 返回一个字符串做为id即可
   });    
 
   var bannertpl = fs.readFileSync(path.join(__dirname,'./templates/banner.html'), 'utf8');
   tpl += template.precompile(bannertpl, {
-    id: 'banner.html'
+      // 可以动态处理id
+    id: function(opt) {
+        console.log(opt.path);// 会带回路径
+        return 'banner.html';
+    }
   });
 // 浏览器只需要引用这个user.js即可
   var tplpath = path.join(__dirname,'./templates/user.js');
