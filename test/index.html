@@ -6,16 +6,16 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1">
         <script src="../index.js"></script>
         <!--这里是预编译好的模板，如果不引用则会异步去拉取模板-->
-        <!--<script src="templates/user.js"></script>-->
+        <script src="templates/user.js"></script>
 	</head>
 	<body>
 		<div id="root"></div>
         <script>
-            window.MICROTEMPLATING.render('user.html', {
+            window.JMTEMPLATE.render('user.html', {
                 root: 'templates',
                 data: {
                     users: [
-                        {url:'http://qqq.com', name: "jiamao"},
+                        {url:'http://qqq.com', name: "jiamao", nickname: 'mao'},
                         {url:'http://qqq2.com', name: "jiamao2"}
                     ]
                 },

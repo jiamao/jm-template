@@ -131,7 +131,7 @@ template.render('./user.html', {
 	<body>
 		<div id="root"></div>
         <script>
-            window.MICROTEMPLATING.render('user.html', {
+            window.JMTEMPLATE.render('user.html', {
                 root: 'templates',
                 data: {
                     users: [

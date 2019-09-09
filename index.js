@@ -129,7 +129,7 @@
         if(typeof id == 'function') id = id(options);
         // 压入window下的缓存中
         var code = "if(!window['"+templateWindowCache+"']){window['"+templateWindowCache+"']={};}";
-        code += "window['"+templateWindowCache+"']['"+id+"']=\"" + decode(tpl).replace(/\\x/g, '\\\\x') + '";';
+        code += "window['"+templateWindowCache+"']['"+id+"']=\"" + tpl.replace(/[\r\t\n]/g, " ").replace(/"/g, '\\x22') + '";';
         return code;
     }
 
