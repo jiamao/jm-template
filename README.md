@@ -30,6 +30,8 @@ let code = template.renderString(`<% for ( var i = 0; i < users.length; i++ ) { 
   <% } %>`, 
   {
       users: users
+  }, {
+      // filters  
   });
 
 ```
@@ -40,6 +42,7 @@ template.render('./user.html', {
     data: {
         users: users
     },
+    filters: {}, // 支持filter
     root: path.resolve(__dirname, 'templates') // 模板所在路径，如果在浏览器中。这里可以是url
   }, function(err, res) {
     console.log(res);
@@ -81,6 +84,29 @@ template.render('./user.html', {
   fs.writeFileSync(tplpath, tpl);
 ```
 
+#### filters
+支持模板在对一些数据进行二次处理函数。
+```js
+template.render('./user.html', {
+    data: {
+        users: users
+    },
+    filters: {
+        add: function(s) {
+            return 'ding ' + s;
+        },
+        change: function(s, l) {
+            if(l) return s.substr(0, l);
+            return s;
+        }
+    },
+    root: path.resolve(__dirname, 'templates')
+  }, function(err, res) {
+    console.log('file render', res);
+  });
+```
+
+
 ### 示例
 
 [https://jiamao.github.io/jm-template/test/index.html](https://jiamao.github.io/jm-template/test/index.html)
@@ -106,7 +132,16 @@ template.render('./user.html', {
                         {url:'http://qqq.com', name: "jiamao"},
                         {url:'http://qqq2.com', name: "jiamao2"}
                     ]
-                }
+                },
+                filters: {
+                    add: function(s) {
+                        return 'ding ' + s;
+                    },
+                    change: function(s, l) {
+                        if(l) return s.substr(0, l);
+                        return s;
+                    }
+                },
             }, function(err, res) {
                 document.getElementById('root').innerHTML = res;
             });

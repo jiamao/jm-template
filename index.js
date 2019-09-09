@@ -2,8 +2,10 @@
 
 (function(){
     var includeReg = /include\s*\(\s*([^\)]+)\s*\)\s*[;]*/;
+    var spaceReg = /(^\s*)|(\s*$)/g;    // 去除前后空格
     var templateWindowCache = '__micro$tpl$templates__';
     var codeArrayName = '__micro$tpl$codes__';
+    var filtersName = '__micro$tpl$filters__';
 
     // 是否为已编 译过的
     function isTemplate(code) {
@@ -21,7 +23,29 @@
         var code = codeArrayName+".push('" + tpl.replace(/[\r\t\n]/g, " ")
             .split("<%").join("\t")
             .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-            .replace(/\t=(.*?)%>/g, "',$1,'")
+            .replace(/\t=(.*?)%>/g, function(i, f) {
+                // 如果有filters，则处理
+                if(f && f.indexOf(' | ') > -1) {
+                    var filters = f.split(' | ');
+                    for(var i=0;i<filters.length;i++) {
+                        if(i===0) {
+                            f = filters[i].replace(spaceReg, '');
+                        }
+                        else {
+                            // filters名
+                            var fn = filters[i].replace(spaceReg, '');
+                            // 如果已经有()。则直接插入第一个变量
+                            if(fn.indexOf('(') > -1) {
+                                f = filtersName + '.' + fn.replace('(', '(' + f + ',');
+                            }
+                            else {
+                                f = filtersName + '.' + fn + '('+f+')';
+                            }
+                        }
+                    }
+                }
+                return "',"+f+",'";
+            })
             .split("\t").join("');")
             .split("%>").join(codeArrayName+".push('")
             .split("\r").join("\\'")
@@ -31,11 +55,12 @@
 
     // 执行编译
     // 需要提供data，会根据data中的变量，生成函数
+    // filters {object} {add:function} 数据处理函数
     // @returns {Object} {
     //    fun:Function 可执行的function fun.apply(this, template.params);
     //    params: [] 执行模板函数时，用来apply的参数数组
     //  } 
-    function compile(tpl, data) {
+    function compile(tpl, data, filters) {
         if(typeof tpl !== 'string') return tpl;
         var code = decode(tpl);
         if(!code) return null;
@@ -53,6 +78,12 @@
                 params.push(data[k]);
             }
         }
+
+        // 默认会添加一个filters的参数
+        if(!filters) filters = {};
+        funBoxCode += '"'+filtersName+'",';
+        params.push(filters);
+
         funBoxCode += '"var '+ codeArrayName + '=[];' + code + ';return ' +codeArrayName+ '.join(\'\');");';
         
         var fun = new Function(funBoxCode);
@@ -73,9 +104,9 @@
     }
 
     // 根据数据渲染模板
-    function renderString(tpl, data) {
+    function renderString(tpl, data, filters) {
         if(!tpl) return "";
-        var template = compile(tpl, data);
+        var template = compile(tpl, data, filters);
         if(template) return template.fun.apply(this, template.params);
         return "";
     }
@@ -94,7 +125,7 @@
             }
             try {
                 //options.data = options.data||{};
-                res = renderString(tpl || '', options.data);
+                res = renderString(tpl || '', options.data, options.filters);
                 callback && callback(null, res);
             }
             catch(e) {

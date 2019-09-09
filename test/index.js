@@ -20,6 +20,15 @@ let code = engine.renderString(`<% for ( var i = 0; i < users.length; i++ ) { %>
     data: {
         users: users
     },
+    filters: {
+        add: function(s) {
+            return 'ding ' + s;
+        },
+        change: function(s, l) {
+            if(l) return s.substr(0, l);
+            return s;
+        }
+    },
     root: path.resolve(__dirname, 'templates')
   }, function(err, res) {
     console.log('file render', res);
