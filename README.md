@@ -86,6 +86,12 @@ template.render('./user.html', {
 
 #### filters
 支持模板在对一些数据进行二次处理函数。
+```html
+<!-- user.html -->
+<% for ( var i = 0; i < users.length; i++ ) { %>
+    <li><a href="<%=users[i].url%>"><%=users[i].nickname || users[i].name | add | change(8)%></a></li>
+  <% } %>
+```
 ```js
 template.render('./user.html', {
     data: {
@@ -105,7 +111,7 @@ template.render('./user.html', {
     console.log('file render', res);
   });
 ```
-
+> 注： filter函数之间请用 | ，前后带空隔。
 
 ### 示例
 

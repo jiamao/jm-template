@@ -4,7 +4,7 @@ const fs = require('fs');
 const engine = require('../index');
 
 const users =  [
-    {url:'http://qqq', name: "jiamao"},
+    {url:'http://qqq', name: "jiamao", nickname: 'nick'},
     {url:'http://qqq2', name: "jiamao2"}
 ];
 

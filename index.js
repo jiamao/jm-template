@@ -3,6 +3,9 @@
 (function(){
     var includeReg = /include\s*\(\s*([^\)]+)\s*\)\s*[;]*/;
     var spaceReg = /(^\s*)|(\s*$)/g;    // 去除前后空格
+    var posReg = /((^|%>)[^\t]*)'/g;    // 替换单引号
+    var filterReg = /\s+\|\s+/;// filter 分隔
+    var scriptTagReg = /(\<script\s+[^\>]*type="\s*text\/(template|x-template|html)\s*"[^\>]*\>)([\w\W]*?)\<\/script\>/g; // script标签配匹
     var templateWindowCache = '__micro$tpl$templates__';
     var codeArrayName = '__micro$tpl$codes__';
     var filtersName = '__micro$tpl$filters__';
@@ -20,36 +23,63 @@
     function decode(tpl){        
         if(!tpl || typeof tpl != 'string') return "";
         if(isTemplate(tpl)) return tpl;
-        var code = codeArrayName+".push('" + tpl.replace(/[\r\t\n]/g, " ")
-            .split("<%").join("\t")
-            .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-            .replace(/\t=(.*?)%>/g, function(i, f) {
-                // 如果有filters，则处理
-                if(f && f.indexOf(' | ') > -1) {
-                    var filters = f.split(' | ');
-                    for(var i=0;i<filters.length;i++) {
-                        if(i===0) {
-                            f = filters[i].replace(spaceReg, '');
+        // 去除单引号, 需要递归去除所有单引号
+        function replacePos(source) {
+            if(!source) return source;
+            if(posReg.test(source)) {
+                source = source.replace(posReg, "$1\r");
+                return replacePos(source);
+            }
+            return source;
+        }
+
+        // 替换script type="text/html"  / text/template  text/x-template
+        function replaceTemplateTag(tpl) {
+            return tpl.replace(scriptTagReg, function(input, tag, type, code) {
+                var s = code.replace(/\</g, '\\x3c').replace(/\>/g, '\\x3e');
+                return input.replace(code, s);
+            });
+        }
+
+        // 处理filter函数
+        function replaceFilters(tpl) {
+            // 如果有filters，则处理
+            if(tpl && filterReg.test(tpl)) {
+                var filters = tpl.split(filterReg);
+                for(var i=0;i<filters.length;i++) {
+                    if(i===0) {
+                        tpl = filters[i].replace(spaceReg, '');
+                    }
+                    else {
+                        // filters名
+                        var fn = filters[i].replace(spaceReg, '');
+                        if(!fn) continue;
+                        // 如果已经有()。则直接插入第一个变量
+                        if(fn.indexOf('(') > -1) {
+                            tpl = filtersName + '.' + fn.replace('(', '(' + tpl + ',');
                         }
                         else {
-                            // filters名
-                            var fn = filters[i].replace(spaceReg, '');
-                            // 如果已经有()。则直接插入第一个变量
-                            if(fn.indexOf('(') > -1) {
-                                f = filtersName + '.' + fn.replace('(', '(' + f + ',');
-                            }
-                            else {
-                                f = filtersName + '.' + fn + '('+f+')';
-                            }
+                            tpl = filtersName + '.' + fn + '('+tpl+')';
                         }
                     }
                 }
+            }
+            return tpl;
+        }
+
+        var code = replaceTemplateTag(tpl).replace(/[\r\t\n]/g, " ")
+            .split("<%").join("\t");
+
+        code = replacePos(code).replace(/((^|%>)[^\t]*)'/g, "$1\r")
+            .replace(/\t=(.*?)%>/g, function(i, f) {
+                // 如果有filters，则处理
+                f = replaceFilters(f);
                 return "',"+f+",'";
             })
             .split("\t").join("');")
             .split("%>").join(codeArrayName+".push('")
-            .split("\r").join("\\'")
-        + "');";
+            .split("\r").join("\\'");
+        code = codeArrayName+".push('" + code + "');"
         return code.replace(/"/g, '\\x22').replace(/'/g, '\\x27');
     }
 
@@ -177,7 +207,7 @@
             getTemplate(p, path, options, function(err, res) {
                 res = res||'';
                 content = content.replace(ms[0], res);
-                callback && callback(null, content);
+                resolveTemplate(content, path, options, callback);
             });
         }
         else {
@@ -213,7 +243,7 @@
             }
         }
         else {
-            return join(parent, path);
+            return path;
         }
     }
     function join(p1, p2) {
