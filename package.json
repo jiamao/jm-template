@@ -1,7 +1,7 @@
 {
   "name": "jm-template",
-  "version": "1.0.3",
-  "description": "",
+  "version": "1.0.4",
+  "description": "微模板引擎，支持预编译，多模板合并。",
   "main": "index.js",
   "scripts": {
     "test": "node ./test/index"
