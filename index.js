@@ -24,6 +24,7 @@
         if(!tpl || typeof tpl != 'string') return "";
         if(isTemplate(tpl)) return tpl;
         // 去除单引号, 需要递归去除所有单引号
+        // 官方引擎 这里是有bug的
         function replacePos(source) {
             if(!source) return source;
             if(posReg.test(source)) {
