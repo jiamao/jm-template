@@ -90,6 +90,9 @@ template.render('./user.html', {
 
 #### filters
 支持模板在对一些数据进行二次处理函数。
+> 写法： 
+> 1. 用|分隔，且前后要有空隔  
+> 2. 可以写成函数形式，调用时引擎当前值放入第一个参数，例如： `name | change(2)`， 最终调用会是`change(name, 2)`      
 ```html
 <!-- user.html -->
 <% for ( var i = 0; i < users.length; i++ ) { %>
