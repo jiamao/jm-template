@@ -4,6 +4,7 @@
     var includeReg = /include\s*\(\s*([^\)]+)\s*\)\s*[;]*/;
     var spaceReg = /(^\s*)|(\s*$)/g;    // 去除前后空格
     var posReg = /((^|%>)[^\t]*)'/g;    // 替换单引号
+    var annoRe = /<!--[\s\S]*?-->|(?:\/\*[\s\S]*?\*\/)*/g; // 去除注释
     var filterReg = /\s+\|\s+/;// filter 分隔
     var scriptTagReg = /(\<script\s+[^\>]*type="\s*text\/(template|x-template|html)\s*"[^\>]*\>)([\w\W]*?)\<\/script\>/g; // script标签配匹
     var templateWindowCache = '__micro$tpl$templates__';
@@ -130,7 +131,11 @@
         if(typeof id == 'function') id = id(options);
         // 压入window下的缓存中
         var code = "if(!window['"+templateWindowCache+"']){window['"+templateWindowCache+"']={};}";
-        code += "window['"+templateWindowCache+"']['"+id+"']=\"" + tpl.replace(/[\r\t\n]/g, " ").replace(/"/g, '\\x22') + '";';
+        code += "window['"+templateWindowCache+"']['"+id+"']=\"" + 
+                tpl.replace(annoRe, '') // 注释
+                .replace(/\>\s+\</g, '><')
+                .replace(/[\r\t\n]/g, " ")
+                .replace(/"/g, '\\x22').trim() + '";';
         return code;
     }
 
