@@ -191,7 +191,7 @@
         }
         // 在nodejs下运行，去读文件
         else {
-            path = require('path').join(root, path);
+            path = require('path').resolve(root, path);
              require('fs').readFile(path, 'utf8', function(err, data){
                  if(err) {
                      console.log(err);
@@ -252,6 +252,7 @@
             return path;
         }
     }
+
     function join(p1, p2) {
         if(!p1) return p2;
         if(!p2) return p1;
