@@ -37,7 +37,7 @@ let code = engine.renderString(`<% for ( var i = 0; i < users.length; i++ ) { %>
         callback && callback(null, content);
     }
   }, function(err, res) {
-    console.log('file render', res);
+    console.log('file render', err||res);
   });
 
   var usertpl = fs.readFileSync(path.join(__dirname,'./templates/user.html'), 'utf8');

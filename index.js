@@ -179,32 +179,50 @@
     // 获取模板内容，如果有parent则它的路径是相对于parent的
     function getTemplate(path, parent, options, callback) {
         path = resolve(path, parent);
+        // 读取模板内容
+        readTemplate(path, options, function(err, content) {
+            if(err) {
+                callback && callback(err, content);
+            }
+            else {
+                // 如果有模板预处理函数，则需要先调用
+                if(typeof options.preResolveTemplate == 'function') {
+                    options.preResolveTemplate(content, path, options, function(err, content) {
+                        if(err) {
+                            console.error(err);
+                        }
+                        resolveTemplate(content, path, options, callback);
+                    });
+                }
+                else {
+                    resolveTemplate(content, path, options, callback);
+                }
+            }
+        });
+    }
+
+    // 读取模板文件或缓存内容
+    function readTemplate(path, options, callback) {
         var root = options.root || '';
-       
         // 如果在浏览器中执行，则去缓存中取，一般预编译发线上会把它压入
         if(typeof window != 'undefined') {
             var cache = window[templateWindowCache];
             if(cache && cache[path]) {
-                resolveTemplate(cache[path] || '', path, options, callback);
+                callback && callback(null, cache[path] || '');
             }
             else {
                 // 异步去远程拉取
                 ajax(join(root, path), function(res) {
-                    resolveTemplate(res || '', path, options, callback);
+                    callback && callback(null, res || '');
                 });
             }
         }
         // 在nodejs下运行，去读文件
         else {
             path = require('path').resolve(root, path);
-             require('fs').readFile(path, 'utf8', function(err, data){
-                 if(err) {
-                     console.log(err);
-                     callback && callback(err);
-                     return;
-                 }
-                 resolveTemplate(data || '', path, options, callback);
-             });
+            require('fs').readFile(path, 'utf8', function(err, data){
+                callback && callback(err, data || '');
+            });
         }
     }
 
@@ -215,18 +233,17 @@
         if(ms && ms.length > 1) {
             // 递归获取，直到处理完include
             var p =  ms[1].replace(/['"]/g,'').replace(/\\x22/g, '').replace(/\\x27/g, '');
+            
             getTemplate(p, path, options, function(err, res) {
+                if(err) {
+                    console.error(err);
+                }
                 res = res||'';
                 content = content.replace(ms[0], res);
                 resolveTemplate(content, path, options, callback);
             });
         }
-        else {
-            // 如果有模板预处理函数，则需要先调用
-            if(typeof options.preResolveTemplate == 'function') {
-                options.preResolveTemplate(content, path, options, callback);
-                return;
-            }
+        else {            
             callback && callback(null, content);
         }
     }
