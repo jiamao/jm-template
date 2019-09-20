@@ -69,7 +69,9 @@
             return tpl;
         }
 
-        var code = replaceTemplateTag(tpl).replace(/[\r\t\n]/g, " ")
+        var code = replaceTemplateTag(tpl)
+            .replace(/\\/g, '\\\\\\\\') // \需要被转义，不然会出乱
+            .replace(/[\r\t\n]/g, " ")
             .split("<%").join("\t");
 
         code = replacePos(code).replace(/((^|%>)[^\t]*)'/g, "$1\r")
