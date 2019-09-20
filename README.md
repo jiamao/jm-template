@@ -28,10 +28,11 @@ const users =  [
 let code = template.renderString(`<% for ( var i = 0; i < users.length; i++ ) { %>
     <li><a href="<%=users[i].url%>"><%=users[i].name%></a></li>
   <% } %>`, 
-  {
-      users: users
-  }, {
-      // filters  
+{
+    data: {
+            users: users
+        },
+    filters: {}
   });
 
 ```
@@ -113,7 +114,11 @@ template.render('./user.html', {
             return s;
         }
     },
-    root: path.resolve(__dirname, 'templates')
+    root: path.resolve(__dirname, 'templates'),
+     // 模板解析前的预处理   可选
+    preResolveTemplate: function(content, path, options, callback) {
+        callback && callback(null, content);
+    }
   }, function(err, res) {
     console.log('file render', res);
   });

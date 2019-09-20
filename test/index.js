@@ -11,7 +11,9 @@ const users =  [
 let code = engine.renderString(`<% for ( var i = 0; i < users.length; i++ ) { %>
     <li><a href="<%=users[i].url%>"><%=users[i].name%></a></li>
   <% } %>`, {
-      users: users
+      data: {
+        users: users
+    }
   });
 
   console.log(code);
@@ -29,7 +31,11 @@ let code = engine.renderString(`<% for ( var i = 0; i < users.length; i++ ) { %>
             return s;
         }
     },
-    root: path.resolve(__dirname, 'templates')
+    root: path.resolve(__dirname, 'templates'),
+    // 模板解析前的预处理   可选
+    preResolveTemplate: function(content, path, options, callback) {
+        callback && callback(null, content);
+    }
   }, function(err, res) {
     console.log('file render', res);
   });

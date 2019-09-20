@@ -1,6 +1,6 @@
 {
   "name": "jm-template",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "微模板引擎，支持预编译，多模板合并。",
   "main": "index.js",
   "scripts": {

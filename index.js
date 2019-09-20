@@ -140,11 +140,16 @@
     }
 
     // 根据数据渲染模板
-    function renderString(tpl, data, filters) {
+    function renderString(tpl, options, callback) {
         if(!tpl) return "";
-        var template = compile(tpl, data, filters);
-        if(template) return template.fun.apply(this, template.params);
-        return "";
+        options = options || {};
+        var result = tpl;
+        var template = compile(tpl, options.data || {}, options.filters);
+        if(template) result = template.fun.apply(this, template.params);
+
+        callback && callback(result);
+
+        return result;
     }
 
     /**
@@ -161,7 +166,7 @@
             }
             try {
                 //options.data = options.data||{};
-                res = renderString(tpl || '', options.data, options.filters);
+                res = renderString(tpl || '', options);
                 callback && callback(null, res);
             }
             catch(e) {
@@ -217,6 +222,11 @@
             });
         }
         else {
+            // 如果有模板预处理函数，则需要先调用
+            if(typeof options.preResolveTemplate == 'function') {
+                options.preResolveTemplate(content, path, options, callback);
+                return;
+            }
             callback && callback(null, content);
         }
     }
