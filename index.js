@@ -70,8 +70,9 @@
         }
 
         var code = replaceTemplateTag(tpl)
-            .replace(/\\/g, '\\\\\\\\') // \需要被转义，不然会出乱
-            .replace(/[\r\t\n]/g, " ")
+            .replace(/\\/g, '\\\\\\') // \需要被转义，不然会出乱
+            .replace(/\n/g, '\\\\n')    // 保留换行
+            .replace(/[\r\t]/g, " ")
             .split("<%").join("\t");
 
         code = replacePos(code).replace(/((^|%>)[^\t]*)'/g, "$1\r")
@@ -135,6 +136,8 @@
         var code = "if(!window['"+templateWindowCache+"']){window['"+templateWindowCache+"']={};}";
         code += "window['"+templateWindowCache+"']['"+id+"']=\"" + 
                 tpl.replace(annoRe, '') // 注释
+                .replace(/\\/g, '\\\\')
+                .replace(/\n/g, '\\n')    // 保留换行
                 .replace(/\>\s+\</g, '><')
                 .replace(/[\r\t\n]/g, " ")
                 .replace(/"/g, '\\x22').trim() + '";';

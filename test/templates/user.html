@@ -3,3 +3,13 @@
     <div class="cell-box border-spacing js-top-banner" data-test="\\my \name">
         <% include("./banner.html") %>
     </div>
+
+    <script id="tpl_life_banner" type="text/html">
+        <div class="item js-tap-on <%= divClass %>" data-stat="<%= stat %>" data-local-link="<%= sLinkUrl %>" recom-id="<%= recomId%>">
+            <img src="<%= sImageUrl %>" alt="<%= sThemeTitle %>">
+            <h6 class="tt f-bold <%= isRedDiv %>"><span class='js-life-recome-title'><%= sThemeTitle %></span> <i class="<%= giftIconClass %> js-gift-icon item-icon <%= giftClass %>"></i></h6>
+            <p class="js-tip txt tf">
+                <%= sThemeDis %>
+            </p>
+        </div>
+    </script>
