@@ -70,7 +70,7 @@
         }
 
         var code = replaceTemplateTag(tpl)
-            .replace(/\\/g, '\\\\\\') // \需要被转义，不然会出乱
+            .replace(/\\/g, '\\\\\\\\') // \需要被转义，不然会出乱\\\\\\\\
             .replace(/\n/g, '\\\\n')    // 保留换行
             .replace(/[\r\t]/g, " ")
             .split("<%").join("\t");
