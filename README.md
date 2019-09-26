@@ -52,13 +52,13 @@ template.render('./user.html', {
 
 #### 带子模板文件
 支持 `include` 函数来加载子模板。
-``` html
+```html
 <!-- user.html -->
 <div class="cell-box border-spacing js-top-banner">
     <% include("./banner.html") %>
 </div>
 ```
-``` html
+```html
 <!-- banner.html -->
 <% for ( var i = 0; i < users.length; i++ ) { %>
     <li><a href="<%=users[i].url%>"><%=users[i].name%></a></li>
