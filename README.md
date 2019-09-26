@@ -68,7 +68,7 @@ template.render('./user.html', {
 #### 预编译
 如果有子模板文件，在开发环境下，会自动ajax请求异步渲染。 当我们部署到生产环境，自然不希望增加请求，这时就可以用预编译功能，它可以把模板压入同一js文件中。
 
-
+> 如果你使用`gulp`，可以用它的插件：[gulp-jmtemplate](https://github.com/jiamao/gulp-jmtemplate)
 ```js
 // 预编译
   var usertpl = fs.readFileSync(path.join(__dirname,'./templates/user.html'), 'utf8');
