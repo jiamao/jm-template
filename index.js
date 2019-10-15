@@ -296,8 +296,7 @@
     }   
     
     //生成ajax请求
-    //time 延时多少毫秒
-    function ajax(url, callback, time) {
+    function ajax(url, callback) {
         var xmlHttp;
         if (window.ActiveXObject) {
             xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
@@ -319,17 +318,8 @@
                 }
             }
         };
-        xmlHttp.open("GET",url,true);
-        //缓存中没有,指定了需要TAG处理，则优先返回，并延时处理资源
-        if(time) {
-            //css延时请求，因为如果缓存中没有的话，会直接生成link标签保证加载顺序
-            setTimeout(function(){
-                xmlHttp.send(null);
-            }, time);
-        }
-        else {
-            xmlHttp.send(null);
-        }
+        xmlHttp.open("GET",url,true);        
+        xmlHttp.send(null);
         return xmlHttp;
     }
 
